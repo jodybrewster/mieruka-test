@@ -139,10 +139,12 @@ To modify `pro-mieruka`: edit `../pro-dev-skillset/plugins/pro-mieruka/`, bump v
 ## Reset / wipe
 
 ```bash
-find . -mindepth 1 -maxdepth 1 ! -name 'CLAUDE.md' ! -name '.git' -exec rm -rf {} +
+find . -mindepth 1 -maxdepth 1 ! -name 'CLAUDE.md' ! -name 'PLAN.md' ! -name '.git' -exec rm -rf {} +
 ```
 
-Wipes everything except this file and git history. Re-run from Step 1.
+Wipes everything except this file, `PLAN.md`, and git history. Re-run from Step 1.
+
+**Never delete `CLAUDE.md` or `PLAN.md`.** These are the persistent context for this repo — all other files are disposable test artifacts.
 
 ## Troubleshooting
 
