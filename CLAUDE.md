@@ -25,6 +25,13 @@ This writes `.claude/settings.json` and installs `pro-starter@pro-dev-skillset`,
 
 Verify with: `claude plugin list`
 
+If `pro-mieruka` doesn't appear or shows as "not found", refresh the marketplace cache first:
+
+```bash
+claude plugin marketplace update pro-dev-skillset
+claude plugin install pro-mieruka@pro-dev-skillset --scope project
+```
+
 ### Step 2 — Initialize mieruka with `/init-mieruka`
 
 Once `pro-mieruka` is installed (included via `pro-starter`), the `/init-mieruka` command is available in this Claude Code session. Run it:
@@ -33,7 +40,7 @@ Once `pro-mieruka` is installed (included via `pro-starter`), the `/init-mieruka
 /init-mieruka
 ```
 
-Behind the scenes, this runs `npx mieruka init`, which:
+Behind the scenes, this resolves the mieruka binary (local build until it's published to npm) and runs `mieruka init`, which:
 
 1. Checks Node 20+ and the `claude` CLI
 2. Asks for the design-inspiration MCP — a local path or a git URL (it clones, installs, and builds)
@@ -45,13 +52,15 @@ Behind the scenes, this runs `npx mieruka init`, which:
 For non-interactive use, pass flags directly:
 
 ```bash
-npx mieruka init --mcp-path /path/to/design-inspiration-mcp/dist/index.js --serper-key YOUR_KEY
+node ~/Projects/mieruka/mieruka/bin/mieruka.mjs init --mcp-path /path/to/design-inspiration-mcp/dist/index.js --serper-key YOUR_KEY
 ```
+
+> **Note:** mieruka is not yet published to npm. The `/init-mieruka` command resolves the local build automatically. Once published, `npx mieruka init` will work directly.
 
 ### Step 3 — Start mieruka
 
 ```bash
-npx mieruka dev
+node ~/Projects/mieruka/mieruka/bin/mieruka.mjs dev
 ```
 
 Opens at http://127.0.0.1:7777.
@@ -88,5 +97,5 @@ See `../pro-dev-skillset/RELEASING.md` for the full version-bump law.
 
 - **`claude plugin list` doesn't show pro-mieruka** — the plugin cache may be stale. Run `claude plugin update` or re-run the bootstrap script.
 - **`/init-mieruka` command not found** — open Claude Code fresh after installing (`claude plugin list` should show `pro-mieruka@pro-dev-skillset`).
-- **`npx mieruka init` fails with "package not found"** — mieruka may not be published yet; build it locally from `../mieruka/mieruka` and use the `--mcp-path` flag pointing to the local dist.
+- **`npx mieruka init` fails with "package not found"** — mieruka is not yet published to npm. `/init-mieruka` uses the local build at `../mieruka/mieruka/bin/mieruka.mjs` automatically.
 - **Port 7777 in use** — run `npx mieruka dev -p 7778` and re-register the MCP: `claude mcp add --transport http --scope project mieruka http://127.0.0.1:7778/mcp`.
